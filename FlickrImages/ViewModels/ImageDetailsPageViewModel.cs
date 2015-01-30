@@ -82,13 +82,13 @@
                         StorageFolder storageFolder = await KnownFolders.PicturesLibrary.CreateFolderAsync(FlickrImagesSettings.ApplicationFolderName, CreationCollisionOption.OpenIfExists);
                         StorageFile storageFile = await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.GenerateUniqueName);
 
-                        ImageProperties pictureProperties = await storageFile.Properties.GetImagePropertiesAsync();
-                        pictureProperties.Title = ImageDetailsPageContext.SelectedItem.Title;
-                        pictureProperties.SavePropertiesAsync();
-
                         using (var storageStream = await storageFile.OpenAsync(FileAccessMode.ReadWrite))
                         {
                             await RandomAccessStream.CopyAndCloseAsync(stream.GetInputStreamAt(0), storageStream.GetOutputStreamAt(0));
+                            
+                            ImageProperties pictureProperties = await storageFile.Properties.GetImagePropertiesAsync();
+                            pictureProperties.Title = ImageDetailsPageContext.SelectedItem.Author;
+                            pictureProperties.SavePropertiesAsync();
                         }
                     }
                 }

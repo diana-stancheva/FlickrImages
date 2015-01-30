@@ -10,6 +10,7 @@
     using GalaSoft.MvvmLight;
 
     using FlickrImages.Settings;
+    using Windows.Storage.FileProperties;
 
     public class LocalImagesPageViewModel : ViewModelBase
     {
@@ -29,11 +30,13 @@
             {
                 foreach (var file in fileList)
                 {
+                    ImageProperties pictureProperties = await file.Properties.GetImagePropertiesAsync();
+
                     this.LocalImages.Add(new FeedItemViewModel
                     {
                         Title = file.Name,
                         Media = file.FolderRelativeId,
-                        Author = string.Empty
+                        Author = pictureProperties.Title
                     });
                 }
             }
